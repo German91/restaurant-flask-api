@@ -1,5 +1,4 @@
 from project import app, bcrypt
-from sqlalchemy.ext.hybrid import hybrid_method, hybrid_property
 
 
 class User(db.Model):
@@ -9,30 +8,19 @@ class User(db.Model):
     # Fields
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.Integer, unique=True, nullable=False)
-    _password = db.Column(db.Binary(60), nullable=False)
+    password = db.Column(db.Binary(60), nullable=False)
 
     # Relationships
     restaurants = db.Column(db.relationship('Restaurant', lazy='dynamic'))
 
     # Constructor
-    def __init__(self, username, plaintext_password):
+    def __init__(self, username, password):
         self.username = username
-        self.password = plaintext_password
+        self.password = bcrypt.generate_password_hash(password)
 
 
-    @hybrid_property
-    def password(self):
-        return self._password
-
-
-    @password.setter
-    def set_password(self, plaintext_password):
-        self._password = bcrypt.generate_password_hash(plaintext_password)
-
-
-    @hybrid_method
-    def is_correct_password(self, plaintext_password):
-        return bcrypt.check_password_hash(self.password, plaintext_password)
+    def is_correct_password(self, password):
+        return bcrypt.check_password_hash(self.password, password)
 
 
     def json(self):
