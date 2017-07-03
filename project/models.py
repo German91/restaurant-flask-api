@@ -14,7 +14,7 @@ class UserModel(db.Model):
         self.password = password
 
     def json(self):
-        return ({ 'username': self.username })
+        return {'username': self.username}
 
     @classmethod
     def get_by_username(cls, username):

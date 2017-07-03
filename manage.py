@@ -1,7 +1,6 @@
-from project import app
+from project import manager, app
 from db import db
-
 
 if __name__ == '__main__':
     db.init_app(app)
-    app.run()
+    manager.run()

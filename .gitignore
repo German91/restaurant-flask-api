@@ -1,4 +1,5 @@
 venv/
 __pycache__
 .env
-development.db
+project/development.db
+.idea

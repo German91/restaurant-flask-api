@@ -29,11 +29,9 @@ class UserList(Resource):
         return {'message': 'Account successfully created', 'user': user.json()}, 202
 
 
-
 class User(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('username', type=str, required=True, help='The username is required')
-    parser.add_argument('password', type=str, required=True, help='The password is required')
 
     def get(self, username):
         user = UserModel.get_by_username(username)
@@ -49,7 +47,6 @@ class User(Resource):
 
         if user:
             user.username = data['username']
-            user.password = data['password']
 
             user.save()
             return {'message': 'Account successfully updated', 'user': user.json()}, 200
